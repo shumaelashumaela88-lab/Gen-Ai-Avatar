@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Gen AI Avatar</title>
+
+  <style>
+    body {
+      text-align: center;
+      background: #0f172a;
+      color: white;
+      font-family: Arial;
+    }
+
+    h2 {
+      margin-top: 20px;
+    }
+
+    #avatar {
+      width: 230px;
+      height: 230px;
+      border-radius: 50%;
+      background: url('https://i.imgur.com/6VBx3io.png') no-repeat center/cover;
+      margin: 30px auto;
+      position: relative;
+    }
+
+    #mouth {
+      width: 50px;
+      height: 15px;
+      background: #ff4d4d;
+      position: absolute;
+      bottom: 35px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-radius: 10px;
+    }
+
+    .talk {
+      animation: speak 0.15s infinite;
+    }
+
+    @keyframes speak {
+      0% { height: 15px; }
+      50% { height: 5px; }
+      100% { height: 15px; }
+    }
+
+    input {
+      padding: 10px;
+      width: 260px;
+      border-radius: 10px;
+      border: none;
+      margin-top: 10px;
+    }
+
+    button {
+      padding: 10px 20px;
+      border-radius: 10px;
+      border: none;
+      background: #3b82f6;
+      color: white;
+      cursor: pointer;
+      margin-left: 10px;
+    }
+
+    #response {
+      margin-top: 20px;
+      font-size: 18px;
+      max-width: 400px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  </style>
+</head>
+
+<body>
+
+<h2>Gen AI Avatar</h2>
+
+<div id="avatar">
+  <div id="mouth"></div>
+</div>
+
+<input type="text" id="question" placeholder="Ask something..." />
+<button onclick="askAI()">Ask</button>
+
+<div id="response"></div>
+
+<script>
+async function askAI() {
+  const question = document.getElementById("question").value;
+  const responseBox = document.getElementById("response");
+  const mouth = document.getElementById("mouth");
+
+  responseBox.innerText = "Thinking...";
+
+  // 🔹 Fake AI (replace with real API later)
+  let answer = getFakeAnswer(question);
+
+  responseBox.innerText = answer;
+
+  // Speak
+  let speech = new SpeechSynthesisUtterance(answer);
+
+  speech.onstart = () => mouth.classList.add("talk");
+  speech.onend = () => mouth.classList.remove("talk");
+
+  speechSynthesis.speak(speech);
+}
+
+// 🔹 Temporary AI logic (offline)
+function getFakeAnswer(q) {
+  q = q.toLowerCase();
+
+  if (q.includes("hello")) return "Hello! How can I help you?";
+  if (q.includes("your name")) return "I am your AI avatar assistant.";
+  if (q.includes("weather")) return "I cannot check live weather yet, but it's always a good idea to carry an umbrella.";
+  if (q.includes("who are you")) return "I am a smart AI avatar that can talk and answer questions.";
+
+  return "That's an interesting question! I'm still learning.";
+}
+</script>
+
+</body>
+</html>
